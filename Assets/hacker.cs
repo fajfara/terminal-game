@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class hacker : MonoBehaviour
 {
+	// Game config data
+	string[] level1Passwords = {"car", "jail", "gun", "officer"};
+	string[] level2Passwords = {"money", "credit", "broke", "rich"};
+	string[] level3Passwords = {"watching", "listening", "spying", "conspiracy"};
+	
 	// Game state
 	string _userInput;
 	int level;
 	enum Screen { MainMenu, WaitingForPassword, Win };
+	string password;
 
-	private Screen currentScreen = Screen.MainMenu;
+	private Screen currentScreen;
 	
 	
 	// Use this for initialization
@@ -31,6 +37,10 @@ public class hacker : MonoBehaviour
 		{
 			RunMainMenu(input);
 		}
+		else if (currentScreen == Screen.WaitingForPassword)
+		{
+			checkPassword(input);
+		}
 		
 	}
 
@@ -39,16 +49,20 @@ public class hacker : MonoBehaviour
 		if (input == "1")
 		{
 			level = 1;
+			password = level1Passwords[Random.Range(0, level1Passwords.Length)];
+			Debug.Log(password);
 			StartGame(level);
 		}
 		else if (input == "2")
 		{
 			level = 2;
+			password = level2Passwords[Random.Range(0, level2Passwords.Length)];
 			StartGame(level);
 		}
 		else if (input == "3")
 		{
-			level = 2;
+			level = 3;
+			password = level3Passwords[Random.Range(0, level3Passwords.Length)];
 			StartGame(level);
 		}
 		else if (input == "007")
@@ -90,5 +104,17 @@ public class hacker : MonoBehaviour
 		}
 		Terminal.WriteLine("You have chosen " + choosenMap );
 		Terminal.WriteLine("Please enter your password: ");
+	}
+
+	void checkPassword(string input)
+	{
+		if (input == password)
+		{
+			Terminal.WriteLine("You are in!");
+		}
+		else
+		{
+			Terminal.WriteLine("Sorry, wrong password!");
+		}
 	}
 }
